@@ -1,47 +1,29 @@
 <?php
 
-class HelloWorldTest extends PHPUnit_Framework_TestCase
+class file extends PHPUnit_Framework_TestCase
 {
-    /**
+	/**
      * @var PDO
      */
-    private $pdo;
-
+    protected $pdo;
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
     public function setUp()
     {
-        $this->pdo = new PDO($GLOBALS['db_dsn'], $GLOBALS['db_username'], $GLOBALS['db_password']);
+        $this->pdo = new PDO('mysql:host=localhost;dbname=klinik', "root", "");
         $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $this->pdo->query("CREATE TABLE hello (what VARCHAR(50) NOT NULL)");
     }
 
-    public function tearDown()
+	function test1()
     {
-        $this->pdo->query("DROP TABLE hello");
-    }
-
-    public function testHelloWorld()
-    {
-        $helloWorld = new HelloWorld($this->pdo);
-
-        $this->assertEquals('Hello World', $helloWorld->hello());
-    }
-
-    public function testHello()
-    {
-        $helloWorld = new HelloWorld($this->pdo);
-
-        $this->assertEquals('Hello Bar', $helloWorld->hello('Bar'));
-    }
-
-    public function testWhat()
-    {
-        $helloWorld = new HelloWorld($this->pdo);
-
-        $this->assertFalse($helloWorld->what());
-
-        $helloWorld->hello('Bar');
-
-        $this->assertEquals('Bar', $helloWorld->what());
-    }
+       $dbh = new PDO('mysql:host=localhost;dbname=klinik',"root", "");
+	   $admin = $dbh->prepare("SELECT * FROM login WHERE username = 'klinik1'");
+	   $admin->execute();
+	   $row = $admin->fetch(PDO::FETCH_ASSOC);
+	   $test = $row['password'];
+	   $content = $test;
+	   $this->assertEquals('12345', $content);
+	}
 }
-
+?>
